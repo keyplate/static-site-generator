@@ -1,6 +1,6 @@
 package com.lapchenko.generator.parser;
 
-public enum MarkdownHtmlFormats {
+public enum InlineFormat {
     BOLD("\\*"),
     CODE("`"),
     ITALIC("\\*\\*"),
@@ -11,7 +11,7 @@ public enum MarkdownHtmlFormats {
 
     private final String delimeter;
 
-    MarkdownHtmlFormats(String delimeter) {
+    InlineFormat(String delimeter) {
         this.delimeter = delimeter;
     }
 

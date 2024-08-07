@@ -2,10 +2,8 @@ package com.lapchenko.generator.parser;
 
 import com.lapchenko.generator.exception.*;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MarkdownLinkParserTest {
@@ -14,11 +12,11 @@ public class MarkdownLinkParserTest {
     void regularVideo() {
         var videoLink = new ArrayList<TextNode>();
         videoLink.add(new TextNode("[video-name](video-link)",
-            MarkdownHtmlFormats.PLAIN));
+            InlineFormat.PLAIN));
         var expected = new TextNode("video-name",
-            MarkdownHtmlFormats.VIDEO,
+            InlineFormat.VIDEO,
             "video-link");
-        var parser = new MarkdownParser();
+        var parser = new MarkdownInlineParser();
 
         assertEquals(expected, parser.parseVideo(videoLink).getFirst());
     }
@@ -27,13 +25,13 @@ public class MarkdownLinkParserTest {
     void videoInsideText() {
         var videoLink = new ArrayList<TextNode>();
         videoLink.add(new TextNode("Here's some text [video-name](video-link) text",
-            MarkdownHtmlFormats.PLAIN));
+            InlineFormat.PLAIN));
         var expected = List.of(
-            new TextNode("Here's some text ", MarkdownHtmlFormats.PLAIN),
-            new TextNode("video-name", MarkdownHtmlFormats.VIDEO, "video-link"),
-            new TextNode(" text", MarkdownHtmlFormats.PLAIN)
+            new TextNode("Here's some text ", InlineFormat.PLAIN),
+            new TextNode("video-name", InlineFormat.VIDEO, "video-link"),
+            new TextNode(" text", InlineFormat.PLAIN)
         );
-        var parser = new MarkdownParser();
+        var parser = new MarkdownInlineParser();
 
         assertTrue(expected.containsAll(parser.parseVideo(videoLink)));
     }
@@ -42,13 +40,13 @@ public class MarkdownLinkParserTest {
     void videoInsideTextWithoutSpacing() {
         var videoLink = new ArrayList<TextNode>();
         videoLink.add(new TextNode("Here's some text[video-name](video-link)text",
-            MarkdownHtmlFormats.PLAIN));
+            InlineFormat.PLAIN));
         var expected = List.of(
-            new TextNode("Here's some text", MarkdownHtmlFormats.PLAIN),
-            new TextNode("video-name", MarkdownHtmlFormats.VIDEO, "video-link"),
-            new TextNode("text", MarkdownHtmlFormats.PLAIN)
+            new TextNode("Here's some text", InlineFormat.PLAIN),
+            new TextNode("video-name", InlineFormat.VIDEO, "video-link"),
+            new TextNode("text", InlineFormat.PLAIN)
         );
-        var parser = new MarkdownParser();
+        var parser = new MarkdownInlineParser();
 
         assertTrue(expected.containsAll(parser.parseVideo(videoLink)));
     }
@@ -57,14 +55,14 @@ public class MarkdownLinkParserTest {
     void multipleVideo() {
         var videoLink = new ArrayList<TextNode>();
         videoLink.add(new TextNode("Here's some text[video-name](video-link)text [video-name](video-link) ",
-            MarkdownHtmlFormats.PLAIN));
+            InlineFormat.PLAIN));
         var expected = List.of(
-            new TextNode("Here's some text", MarkdownHtmlFormats.PLAIN),
-            new TextNode("video-name", MarkdownHtmlFormats.VIDEO, "video-link"),
-            new TextNode("text ", MarkdownHtmlFormats.PLAIN),
-            new TextNode("video-name", MarkdownHtmlFormats.VIDEO, "video-link")
+            new TextNode("Here's some text", InlineFormat.PLAIN),
+            new TextNode("video-name", InlineFormat.VIDEO, "video-link"),
+            new TextNode("text ", InlineFormat.PLAIN),
+            new TextNode("video-name", InlineFormat.VIDEO, "video-link")
         );
-        var parser = new MarkdownParser();
+        var parser = new MarkdownInlineParser();
 
         assertTrue(expected.containsAll(parser.parseVideo(videoLink)));
     }
