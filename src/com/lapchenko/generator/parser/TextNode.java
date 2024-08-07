@@ -1,7 +1,7 @@
 package com.lapchenko.generator.parser;
 
-import java.util.List;
-
-public record TextNode(String text, List<InlineFormat> format) {
-
+public record TextNode(String text, InlineFormat format, String link) {
+    public TextNode(String text, InlineFormat format) {
+        this(text, format, null);
+    }
 }
