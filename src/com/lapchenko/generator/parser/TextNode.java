@@ -1,7 +1,7 @@
 package com.lapchenko.generator.parser;
 
-public record TextNode(String text, InlineFormat format, String link) {
-    public TextNode(String text, InlineFormat format) {
+public record TextNode(String text, MarkdownHtmlFormats format, String link) {
+    public TextNode(String text, MarkdownHtmlFormats format) {
         this(text, format, null);
     }
 }
