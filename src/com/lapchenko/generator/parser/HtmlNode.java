@@ -2,6 +2,7 @@ package com.lapchenko.generator.parser;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class HtmlNode {
     private String tag;
@@ -17,6 +18,9 @@ public class HtmlNode {
     }
 
     public String toHtml() {
+        if (tag == null || tag.isEmpty()) {
+            return value;
+        }
         if (children == null || children.isEmpty()) {
             var value = this.value == null ? "" : this.value;
             return tagWithAttributes() + value + enclosingTag();
@@ -45,5 +49,23 @@ public class HtmlNode {
 
     private String enclosingTag() {
         return "</" + this.tag + ">";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HtmlNode htmlNode = (HtmlNode) o;
+
+        if (!Objects.equals(tag, htmlNode.tag)) return false;
+        if (!Objects.equals(attributes, htmlNode.attributes)) return false;
+        if (!Objects.equals(value, htmlNode.value)) return false;
+        return Objects.equals(children, htmlNode.children);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tag, attributes, value, children);
     }
 }
