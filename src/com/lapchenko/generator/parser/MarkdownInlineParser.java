@@ -18,56 +18,54 @@ public class MarkdownInlineParser {
         nodes = parseVideo(nodes);
         return nodes;
     }
-
     public List<TextNode> parseInlineFormat(List<TextNode> oldNodes, InlineFormat format) {
-        var nodesToParse = new ArrayList<TextNode>(oldNodes.stream()
-            .filter(node -> node.format() == InlineFormat.PLAIN)
-            .toList());
-        oldNodes.removeAll(nodesToParse);
         var newNodes = new ArrayList<TextNode>();
-        nodesToParse.forEach(node -> {
-            var nodeTextDelimiter = node.text().split(format.getDelimeter(), -1);
-            if (nodeTextDelimiter.length % 2 == 0) {
-                throw new UnevenDelimeterException();
-            }
-            for (int i = 0; i < nodeTextDelimiter.length; i++) {
-                if (i % 2 == 0) {
-                    newNodes.add(new TextNode(nodeTextDelimiter[i], InlineFormat.PLAIN));
-                } else {
-                    newNodes.add(new TextNode(nodeTextDelimiter[i], format));
+        for (TextNode node : oldNodes) {
+            if (node.format() == InlineFormat.PLAIN) {
+                var nodeTextDelimiter = node.text().split(format.getDelimeter(), -1);
+                if (nodeTextDelimiter.length % 2 == 0) {
+                    throw new UnevenDelimeterException("Formatting incorrect here: " + node.text());
                 }
+                for (int i = 0; i < nodeTextDelimiter.length; i++) {
+                    var newFormat = (i % 2 == 0) ? InlineFormat.PLAIN : format;
+                    newNodes.add(new TextNode(nodeTextDelimiter[i], newFormat));
+                }
+            } else {
+                newNodes.add(node);
             }
-        });
-        newNodes.addAll(oldNodes);
+        }
         return newNodes;
     }
 
     public List<TextNode> parseLinks(List<TextNode> oldNodes) {
-        var nodesToParse = new ArrayList<TextNode>(oldNodes.stream()
-            .filter(node -> node.format() == InlineFormat.PLAIN)
-            .toList());
-        oldNodes.removeAll(nodesToParse);
         var newNodes = new ArrayList<TextNode>();
-        nodesToParse.forEach(node -> newNodes.addAll(extractLinks(node, InlineFormat.LINK)));
-        newNodes.addAll(oldNodes);
+        for (TextNode node : oldNodes) {
+            if (node.format() == InlineFormat.PLAIN) {
+                newNodes.addAll(extractLinks(node, InlineFormat.LINK));
+            } else {
+                newNodes.add(node);
+            }
+        }
         return newNodes;
     }
 
+
     public List<TextNode> parseVideo(List<TextNode> oldNodes) {
-        var nodesToParse = new ArrayList<TextNode>(oldNodes.stream()
-            .filter(node -> node.format() == InlineFormat.PLAIN)
-            .toList());
-        oldNodes.removeAll(nodesToParse);
         var newNodes = new ArrayList<TextNode>();
-        nodesToParse.forEach(node -> newNodes.addAll(extractLinks(node, InlineFormat.VIDEO)));
-        newNodes.addAll(oldNodes);
+        for (TextNode node : oldNodes) {
+            if (node.format() == InlineFormat.PLAIN) {
+                newNodes.addAll(extractLinks(node, InlineFormat.VIDEO));
+            } else {
+                newNodes.add(node);
+            }
+        }
         return newNodes;
     }
 
     public List<TextNode> extractLinks(TextNode node, InlineFormat format) {
-        List<TextNode> newNodes = new ArrayList<>();
+        var newNodes = new ArrayList<TextNode>();
         var matcher = Pattern.compile(format.getDelimeter()).matcher(node.text());
-        String remainingText = node.text();
+        var remainingText = node.text();
         int lastEnd = 0;
         while (matcher.find()) {
             if (matcher.start() > lastEnd) {

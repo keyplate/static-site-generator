@@ -1,11 +1,11 @@
 package com.lapchenko.generator.parser;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.lapchenko.generator.exception.*;
 import java.util.ArrayList;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class MarkdownInlineParserTest {
 
     @Test
@@ -39,6 +39,25 @@ public class MarkdownInlineParserTest {
         var parser = new MarkdownInlineParser();
 
         assertThrows(UnevenDelimeterException.class,
-            () -> parser.parseInlineFormat(imbalanced, InlineFormat.ITALIC));
+                     () -> parser.parseInlineFormat(imbalanced, InlineFormat.ITALIC));
+    }
+
+    @Test
+    void sequencePreserved() {
+        var text = "Hello *my* friend, **James**, here's youtube link [ah](sry-no-link)";
+        var expectedSequence = List.of(
+                "Hello ",
+                "my",
+                " friend, ",
+                "James",
+                ", here's youtube link ",
+                "ah"
+                );
+        var parser = new MarkdownInlineParser();
+        var result = parser.textToTextNodes(text);
+        assertSame(expectedSequence.size(), result.size());
+        for (int i = 0; i < expectedSequence.size(); i++) {
+            assertEquals(expectedSequence.get(i), result.get(i).text());
+        }
     }
 }
