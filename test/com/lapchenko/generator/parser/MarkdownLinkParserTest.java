@@ -33,7 +33,7 @@ public class MarkdownLinkParserTest {
         );
         var parser = new MarkdownInlineParser();
 
-        assertTrue(expected.containsAll(parser.parseVideo(videoLink)));
+        assertTrue(parser.parseVideo(videoLink).containsAll(expected));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class MarkdownLinkParserTest {
         );
         var parser = new MarkdownInlineParser();
 
-        assertTrue(expected.containsAll(parser.parseVideo(videoLink)));
+        assertTrue(parser.parseVideo(videoLink).containsAll(expected));
     }
 
     @Test
@@ -64,6 +64,6 @@ public class MarkdownLinkParserTest {
         );
         var parser = new MarkdownInlineParser();
 
-        assertTrue(expected.containsAll(parser.parseVideo(videoLink)));
+        assertTrue(parser.parseVideo(videoLink).containsAll(expected));
     }
 }

@@ -95,7 +95,7 @@ public class MarkdownBlockParserTest {
     }
 
     //ORDERED LIST
-    void unorderedList() {
+    void orderedList() {
         var list = """
         1 first
         2 second

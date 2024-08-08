@@ -1,20 +1,32 @@
 package com.lapchenko.generator.parser;
 
 import com.lapchenko.generator.exception.UnevenDelimeterException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class MarkdownInlineParser {
-    
-        public List<TextNode> parseInlineFormat(List<TextNode> oldNodes, InlineFormat format) {
+
+    public List<TextNode> textToTextNodes(String text) {
+        var initialNode = new TextNode(text, InlineFormat.PLAIN);
+        List<TextNode> nodes = new ArrayList<>();
+        nodes.add(initialNode);
+        nodes = parseInlineFormat(nodes, InlineFormat.ITALIC);
+        nodes = parseInlineFormat(nodes, InlineFormat.BOLD);
+        nodes = parseInlineFormat(nodes, InlineFormat.STRIKETHROUGH);
+        nodes = parseLinks(nodes);
+        nodes = parseVideo(nodes);
+        return nodes;
+    }
+
+    public List<TextNode> parseInlineFormat(List<TextNode> oldNodes, InlineFormat format) {
         var nodesToParse = new ArrayList<TextNode>(oldNodes.stream()
             .filter(node -> node.format() == InlineFormat.PLAIN)
             .toList());
         oldNodes.removeAll(nodesToParse);
         var newNodes = new ArrayList<TextNode>();
-
         nodesToParse.forEach(node -> {
             var nodeTextDelimiter = node.text().split(format.getDelimeter(), -1);
             if (nodeTextDelimiter.length % 2 == 0) {
@@ -29,35 +41,45 @@ public class MarkdownInlineParser {
             }
         });
         newNodes.addAll(oldNodes);
-
         return newNodes;
     }
 
-    public List<TextNode> parseLinks(List<TextNode> nodes) {
+    public List<TextNode> parseLinks(List<TextNode> oldNodes) {
+        var nodesToParse = new ArrayList<TextNode>(oldNodes.stream()
+            .filter(node -> node.format() == InlineFormat.PLAIN)
+            .toList());
+        oldNodes.removeAll(nodesToParse);
         var newNodes = new ArrayList<TextNode>();
-        nodes.forEach(node -> newNodes.addAll(extractLinks(node, InlineFormat.LINK)));
+        nodesToParse.forEach(node -> newNodes.addAll(extractLinks(node, InlineFormat.LINK)));
+        newNodes.addAll(oldNodes);
         return newNodes;
     }
 
-    public List<TextNode> parseVideo(List<TextNode> nodes) {
+    public List<TextNode> parseVideo(List<TextNode> oldNodes) {
+        var nodesToParse = new ArrayList<TextNode>(oldNodes.stream()
+            .filter(node -> node.format() == InlineFormat.PLAIN)
+            .toList());
+        oldNodes.removeAll(nodesToParse);
         var newNodes = new ArrayList<TextNode>();
-        nodes.forEach(node -> newNodes.addAll(extractLinks(node, InlineFormat.VIDEO)));
+        nodesToParse.forEach(node -> newNodes.addAll(extractLinks(node, InlineFormat.VIDEO)));
+        newNodes.addAll(oldNodes);
         return newNodes;
     }
 
     public List<TextNode> extractLinks(TextNode node, InlineFormat format) {
-        var newNodes = new ArrayList<TextNode>();
+        List<TextNode> newNodes = new ArrayList<>();
         var matcher = Pattern.compile(format.getDelimeter()).matcher(node.text());
-        var text = node.text();
-
+        String remainingText = node.text();
+        int lastEnd = 0;
         while (matcher.find()) {
-            var link = matcher.group();
-            var textAroundLink = text.split(Pattern.quote(link));
-            if (textAroundLink.length > 1 && !Objects.equals(textAroundLink[0], "")) {
-                newNodes.add(new TextNode(textAroundLink[0], InlineFormat.PLAIN));
-                text = textAroundLink[1];
+            if (matcher.start() > lastEnd) {
+                newNodes.add(new TextNode(remainingText.substring(lastEnd, matcher.start()), InlineFormat.PLAIN));
             }
             newNodes.add(new TextNode(matcher.group(1), format, matcher.group(2)));
+            lastEnd = matcher.end();
+        }
+        if (lastEnd < remainingText.length()) {
+            newNodes.add(new TextNode(remainingText.substring(lastEnd), InlineFormat.PLAIN));
         }
         return newNodes;
     }
