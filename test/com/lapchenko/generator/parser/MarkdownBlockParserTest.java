@@ -8,29 +8,29 @@ import com.lapchenko.generator.parser.BlockFormat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MarkdownBlockParserTest {
-    
-    private final static MarkdownBlockParser parser = new MarkdownBlockParser(); 
+
+    private final static MarkdownBlockParser parser = new MarkdownBlockParser();
 
     //GENERAL
     @Test
     void blocksSplittedCorrectly() {
         var blocks = """
-        ### This is heading blocks
-        
-        > This is
-        > a
-        > quote
-        
-        ```code block obviously```
-        """;
+            ### This is heading blocks
+
+            > This is
+            > a
+            > quote
+
+            ```code block obviously```
+            """;
         var expected = List.of(
-                "### This is heading blocks",
-                "> This is\n> a\n> quote",
-                "```code block obviously```"
-                );
+            "### This is heading blocks",
+            "> This is\n> a\n> quote",
+            "```code block obviously```"
+        );
         assertTrue(expected.containsAll(parser.markdownToBlocks(blocks)));
     }
-    
+
     //HEADINGS
     @Test
     void headingBlock1() {
@@ -45,7 +45,7 @@ public class MarkdownBlockParserTest {
         var blocks = parser.blockToBlockTypes(List.of(heading));
         assertSame(BlockFormat.HEADING, blocks.get(heading));
     }
-    
+
     @Test
     void headingBlockHashRedundant() {
         var heading = "####### Heading";
@@ -57,9 +57,9 @@ public class MarkdownBlockParserTest {
     @Test
     void quoteBlock() {
         var quote = """
-        > This is a quote
-        > This is also a quote
-        """;
+            > This is a quote
+            > This is also a quote
+            """;
         var blocks = parser.blockToBlockTypes(List.of(quote));
         assertSame(BlockFormat.QUOTE, blocks.get(quote));
     }
@@ -68,10 +68,10 @@ public class MarkdownBlockParserTest {
     @Test
     void codeBlock() {
         var code = """
-        ```
-        This is a code block
-        ```
-        """;
+            ```
+            This is a code block
+            ```
+            """;
         var blocks = parser.blockToBlockTypes(List.of(code));
         assertSame(BlockFormat.CODE, blocks.get(code));
     }
@@ -86,10 +86,10 @@ public class MarkdownBlockParserTest {
     //UNORDERED LIST
     void unorderedList() {
         var list = """
-        * This
-        * is
-        * an item
-        """;
+            * This
+            * is
+            * an item
+            """;
         var blocks = parser.blockToBlockTypes(List.of(list));
         assertSame(BlockFormat.UNORDERED_LIST, blocks.get(list));
     }
@@ -97,10 +97,10 @@ public class MarkdownBlockParserTest {
     //ORDERED LIST
     void orderedList() {
         var list = """
-        1 first
-        2 second
-        3 third
-        """;
+            1 first
+            2 second
+            3 third
+            """;
         var blocks = parser.blockToBlockTypes(List.of(list));
         assertSame(BlockFormat.ORDERED_LIST, blocks.get(list));
     }

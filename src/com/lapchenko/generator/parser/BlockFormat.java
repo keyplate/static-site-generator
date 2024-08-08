@@ -7,7 +7,7 @@ public enum BlockFormat {
     ORDERED_LIST("^\\d+\\)\\s+(.*)$"),
     HEADING("^#{1,6}\\s+(.+)$"),
     PARAGRAPH("[\\s\\S]");
-    
+
     private final String regex;
 
 
