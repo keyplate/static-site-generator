@@ -1,7 +1,7 @@
 package com.lapchenko.generator.parser;
 
 import org.junit.jupiter.api.Test;
-import com.lapchenko.generator.exception.*;
+import com.lapchenko.generator.exception.UnevenDelimeterException;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;

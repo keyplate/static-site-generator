@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import com.lapchenko.generator.parser.MarkdownBlockParser;
 import com.lapchenko.generator.parser.BlockFormat;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 public class MarkdownBlockParserTest {
 
     private final static MarkdownBlockParser parser = new MarkdownBlockParser();
