@@ -1,4 +1,4 @@
-package com.lapchenko.generator.engine;
+package com.lapchenko.generator.io;
 
 import java.io.IOException;
 import java.nio.file.Files;
