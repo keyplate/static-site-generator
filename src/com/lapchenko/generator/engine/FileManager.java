@@ -5,29 +5,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FileManager {
-    private final String workDirPath;
-    private final String contentDirPath;
 
-    public FileManager(String path, String contenDirPath) {
-        this.workDirPath = path;
-        this.contentDirPath = contenDirPath;
-    }
-
-    private void copyFiles() {
-        var files = getAllFiles(Path.of(contentDirPath));
-        for (var file : files) {
+    public void saveFiles(Map<Path, String> filesData) {
+        for (var fileData : filesData.entrySet()) {
             try {
-                Files.copy(file, Path.of(workDirPath));
+                Files.createFile(fileData.getKey());
+                Files.write(fileData.getKey(), List.of(fileData.getValue()));
             } catch (IOException e) {
-                throw new RuntimeException(String.format("Problem copying file %s to location %s occured", file, workDirPath));
+                throw new RuntimeException(String.format("Problem saving file %s", fileData.getKey()));
             }
         }
     }
 
-    private void clearContent() {
-        var files = getAllFiles(Path.of(this.workDirPath));
+    public void clearDestination(Path destination) {
+        var files = getAllFiles(destination);
         for (var file : files) {
             try {
                 Files.deleteIfExists(file);
@@ -37,7 +31,7 @@ public class FileManager {
         }
     }
 
-    private List<Path> getAllFiles(Path path) {
+    public List<Path> getAllFiles(Path path) {
         var allFiles = new ArrayList<Path>();
         try (var files = Files.list(path)) {
             var paths = files.toList();
