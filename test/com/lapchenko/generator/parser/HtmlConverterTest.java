@@ -2,7 +2,6 @@ package com.lapchenko.generator.parser;
 
 import com.lapchenko.generator.parser.*;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HtmlConverterTest {
