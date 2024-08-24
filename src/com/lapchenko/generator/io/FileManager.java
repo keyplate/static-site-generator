@@ -39,7 +39,7 @@ public class FileManager {
                 if (Files.isDirectory(subPath)) {
                     allFiles.addAll(getAllFiles(subPath));
                 } else {
-                    allFiles.add(path);
+                    allFiles.add(subPath);
                 }
             }
         } catch (IOException e) {
