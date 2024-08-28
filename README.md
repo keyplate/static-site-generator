@@ -1,7 +1,7 @@
 ## Static Site Generator
 
 This project is a simple static site generator that compiles static .html pages from .md (Markdown) files. 
-While there are many automated solutions available, the main goal of this project is to struggle with manual builds and runs
+Also as a side quest for me it was build without statndard build tools like maven or gradle:)
 
 ### Build
 
@@ -11,6 +11,18 @@ To build the project, run:
 $ chmod +x "build.sh"
 $ ./build.sh
 ```
+
+## Usage
+
+1. Create separate directories for input and output.
+2. Place your .md files hierarchy in `/{input_dir}/content`.
+3. For inner links, arrange files according to your link structure. 
+   Example: For a link to a labrador article within a dogs article, place the labrador article in the `/labrador` directory.
+4. Prepare an HTML template for your pages. Include `{{ Content }}` where the content should be inserted.
+5. Run the generator:
+   ```
+   java -cp ./build/ com.lapchenko.generator.Main "path_to_template" "path_to_input_dir" "path_to_output_dir"
+   ``` 
 
 ### Test 
 
