@@ -35,7 +35,6 @@ public class MarkdownFileProcessor {
     }
     
     private String applyTemplate(String html) {
-        System.out.println(html);
         return template.replace(TEMPLAE_PLACEHOLDER, html); 
     }
     

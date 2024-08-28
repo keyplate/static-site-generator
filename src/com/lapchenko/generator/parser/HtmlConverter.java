@@ -36,6 +36,7 @@ public class HtmlConverter {
             case ORDERED_LIST -> toOderedList(text);
             case HEADING -> toHeading(text);
             case UNORDERED_LIST -> toUnorderedList(text);
+            case QUOTE -> toQuote(text);
             default -> toParagraph(text);
         };
     }
@@ -101,7 +102,7 @@ public class HtmlConverter {
         var sb = new StringBuilder(text);
         sb.replace(0, codeDelimeter.length(), "");
         sb.replace(sb.length() - codeDelimeter.length(), sb.length(), "");
-        var code = new HtmlNode("coed", null, sb.toString(), null);
+        var code = new HtmlNode("code", null, sb.toString(), null);
         return new HtmlNode("pre", null, null, List.of(code));
     }
 
