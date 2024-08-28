@@ -14,6 +14,7 @@ public class FileManager {
     public void saveFiles(Map<Path, String> filesData) {
         for (var fileData : filesData.entrySet()) {
             try {
+                Files.createDirectories(fileData.getKey().getParent());
                 Files.createFile(fileData.getKey());
                 Files.write(fileData.getKey(), List.of(fileData.getValue()));
             } catch (IOException e) {

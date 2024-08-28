@@ -29,7 +29,7 @@ public class MarkdownFileProcessor {
             if (fileEntry.getKey().toString().contains(".md")) {
                 fileContent = applyTemplate(fileContent);
             }
-            htmlFilesAndPaths.put(adjustPath(fileEntry.getKey(), outputDirectory), fileContent);
+            htmlFilesAndPaths.put(adjustPath(fileEntry.getKey(), inputDirectory, outputDirectory), fileContent);
         }
         fileManager.saveFiles(htmlFilesAndPaths);
     }
@@ -38,11 +38,12 @@ public class MarkdownFileProcessor {
         return template.replace(TEMPLAE_PLACEHOLDER, html); 
     }
     
-    private Path adjustPath(Path filePath, Path outputDirectory) {
+    private Path adjustPath(Path filePath, Path inputDirectory, Path outputDirectory) {
+        var inputFileName = filePath.toString();
+        var outputFileName = inputFileName.replace(inputDirectory.toString(), outputDirectory.toString());
         if (filePath.toString().contains(".md")) {
-            var fileName = filePath.getFileName().toString();
-            return Path.of(outputDirectory.toString(), fileName.replace(".md", ".html"));
+            return Path.of(outputFileName.replace(".md", ".html"));
         }
-        return Path.of(outputDirectory.toString(), filePath.getFileName().toString());
+        return Path.of(outputFileName);
     }
 }
