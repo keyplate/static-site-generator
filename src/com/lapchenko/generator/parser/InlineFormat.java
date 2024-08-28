@@ -6,8 +6,8 @@ public enum InlineFormat {
     ITALIC("\\*\\*"),
     PLAIN(null),
     STRIKETHROUGH("~~"),
-    LINK("!\\[(.*?)\\]\\((.*?)\\)"),
-    VIDEO("\\[(.*?)\\]\\((.*?)\\)");
+    LINK("\\[(.*?)\\]\\((.*?)\\)"),
+    VIDEO("!\\[(.*?)\\]\\((.*?)\\)");
 
     private final String delimeter;
 
