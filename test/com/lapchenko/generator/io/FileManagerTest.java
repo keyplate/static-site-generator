@@ -37,14 +37,14 @@ public class FileManagerTest {
         Files.createDirectory(Path.of(basePath, "a"));
         Files.createFile(Path.of(basePath, "a", "c.txt"));
         
-        var actual = fileManager.getAllFiles(Path.of(basePath));
+        var actual = fileManager.getAllFilesPaths(Path.of(basePath));
         assertTrue(actual.containsAll(expected));
     }
     
     @Test
     void noFilesRetrieved() throws IOException {
         var fileManager = new FileManager();
-        assertTrue(fileManager.getAllFiles(Path.of(basePath)).isEmpty());
+        assertTrue(fileManager.getAllFilesPaths(Path.of(basePath)).isEmpty());
     }
     
     @Test
