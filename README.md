@@ -1,9 +1,9 @@
-## Static Site Generator
+# Static Site Generator
 
 This project is a simple static site generator that compiles static .html pages from .md (Markdown) files. 
 Also as a side quest for me it was build without statndard build tools like maven or gradle:)
 
-### Build
+## Build
 
 To build the project, run:
 
@@ -24,7 +24,7 @@ $ ./build.sh
    java -cp ./build/ com.lapchenko.generator.Main "path_to_template" "path_to_input_dir" "path_to_output_dir"
    ``` 
 
-### Test 
+## Test 
 
 To run tests, run:
 
