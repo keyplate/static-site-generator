@@ -4,7 +4,7 @@ public enum BlockFormat {
     QUOTE("^>\\s+(.*)$"),
     CODE("^`{3}(.|\\n)*`{3}"),
     UNORDERED_LIST("^\\*\\s+(.*)$"),
-    ORDERED_LIST("^\\d+\\)\\s+(.*)$"),
+    ORDERED_LIST("^\\d+\\.\\s+(.*)$"),
     HEADING("^#{1,6}\\s+(.+)$"),
     PARAGRAPH("[\\s\\S]");
 

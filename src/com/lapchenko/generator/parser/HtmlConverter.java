@@ -110,7 +110,7 @@ public class HtmlConverter {
         var listItems = new ArrayList<HtmlNode>();
         for (String entry : entries) {
             listItems.add(
-                new HtmlNode("<li>", null, entry.substring(2) + "\n", null)
+                new HtmlNode("li", null, entry.substring(2) + "\n", null)
             );
         }
         return new HtmlNode("ul", null, null, listItems);
@@ -121,7 +121,7 @@ public class HtmlConverter {
         var listItems = new ArrayList<HtmlNode>();
         for (String entry : entries) {
             listItems.add(
-                new HtmlNode("<li>", null, entry.substring(entry.indexOf(" ")) + "\n", null)
+                new HtmlNode("li", null, entry.substring(entry.indexOf(" ")) + "\n", null)
             );
         }
         return new HtmlNode("ol", null, null, listItems);
